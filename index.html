@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Absensi WFA</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <style>
+      body {
+        background: url(b.jpg) no-repeat;
+        background-size: cover;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 20px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      canvas {
+        border: 1px solid #000;
+        width: 100%;
+        height: 200px;
+        background: #fff;
+        touch-action: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="text-center text-white">Form Absensi WFA</h2>
+      <form id="absenForm" class="glass-effect">
+        <div class="mb-3">
+          <label class="form-label text-white">NIP:</label>
+          <input type="text" class="form-control" id="nip" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-white">Nama:</label>
+          <input type="text" class="form-control" id="nama" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-white">Jabatan:</label>
+          <input type="text" class="form-control" id="jabatan" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-white">Tanggal & Jam:</label>
+          <input type="text" class="form-control" id="tanggal" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-white">Keterangan WFA:</label>
+          <textarea
+            class="form-control"
+            id="keterangan"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-white">Tanda Tangan:</label>
+          <canvas id="signatureCanvas"></canvas>
+          <button type="button" class="btn btn-danger mt-2" id="clearSignature">
+            Hapus Tanda Tangan
+          </button>
+        </div>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+      </form>
+    </div>
+
+    <script>
+      flatpickr("#tanggal", { enableTime: true, dateFormat: "Y-m-d H:i" });
+      let canvas = document.getElementById("signatureCanvas");
+      let signaturePad = new SignaturePad(canvas, {
+        minWidth: 1,
+        maxWidth: 3,
+        penColor: "black",
+      });
+
+      // Menyesuaikan ukuran canvas agar sesuai dengan perangkat
+      function resizeCanvas() {
+        let ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+        signaturePad.clear();
+      }
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+
+      $("#clearSignature").on("click", function () {
+        signaturePad.clear();
+      });
+
+      $("#absenForm").on("submit", function (e) {
+        e.preventDefault();
+        alert("Data berhasil disimpan!");
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
